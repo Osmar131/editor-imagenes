@@ -150,82 +150,49 @@ async def geometric_imagen(
         res = img
     return Response(content=imagen_a_bytes(res), media_type="image/png")
 
+### sección imagenfusionadacentral.py
+from composicion import procesar_composicion_bytes  # al inicio
+
 @app.post("/componer")
 async def componer_imagenes(
-    fondo: UploadFile = File(...),
-    img1: UploadFile = File(...),
-    img2: UploadFile = File(...),
-    x1: int = Form(0),
-    y1: int = Form(0),
-    x2: int = Form(0),
-    y2: int = Form(0),
-    escala1: float = Form(1.0),
-    escala2: float = Form(1.0),
-    opacidad1: float = Form(1.0),
-    opacidad2: float = Form(1.0),
-    modo: str = Form("horizontal")  # "horizontal", "vertical", "superponer"
+    img_sup: UploadFile = File(...),
+    img_inf: UploadFile = File(...),
+    img_incrustar: UploadFile = File(...),
+    porcentaje_fusion: float = Form(10),
+    curva_fusion: str = Form("lineal"),
+    factor_ampliacion: float = Form(2.0),
+    region_tipo: str = Form("central_superior_derecha"),
+    x_region: int = Form(0),
+    y_region: int = Form(0),
+    ancho_region: int = Form(100),
+    alto_region: int = Form(100),
+    tamaño_ancho_incrustacion: int = Form(25),
+    tamaño_alto_incrustacion: int = Form(None),
+    posicion_incrustacion: str = Form("derecha_centro"),
+    fusion_superior: int = Form(30),
+    fusion_inferior: int = Form(30),
+    fusion_izquierda: int = Form(30),
+    fusion_derecha: int = Form(30),
+    margen: int = Form(20),
+    radio_difuminado: int = Form(50),
+    hacer_cuadrada: bool = Form(True)
 ):
-    # Leer imágenes
-    fondo_img = await leer_imagen(fondo)
-    img1_img = await leer_imagen(img1)
-    img2_img = await leer_imagen(img2)
+    # Leer todas las imágenes
+    img_sup_bytes = await img_sup.read()
+    img_inf_bytes = await img_inf.read()
+    img_incrustar_bytes = await img_incrustar.read()
     
-    # Si el modo es horizontal o vertical, simplemente concatenar
-    if modo == "horizontal":
-        # Redimensionar para que tengan la misma altura
-        h1, w1 = img1_img.shape[:2]
-        h2, w2 = img2_img.shape[:2]
-        h = min(h1, h2)
-        if h1 != h:
-            img1_img = cv2.resize(img1_img, (int(w1*h/h1), h))
-        if h2 != h:
-            img2_img = cv2.resize(img2_img, (int(w2*h/h2), h))
-        # Concatenar lado a lado
-        res = np.hstack((img1_img, img2_img))
-    
-    elif modo == "vertical":
-        # Redimensionar para que tengan el mismo ancho
-        h1, w1 = img1_img.shape[:2]
-        h2, w2 = img2_img.shape[:2]
-        w = min(w1, w2)
-        if w1 != w:
-            img1_img = cv2.resize(img1_img, (w, int(h1*w/w1)))
-        if w2 != w:
-            img2_img = cv2.resize(img2_img, (w, int(h2*w/w2)))
-        # Concatenar una encima de la otra
-        res = np.vstack((img1_img, img2_img))
-    
-    else:  # superponer (con posiciones personalizadas)
-        # Escalar imágenes si es necesario
-        if escala1 != 1.0:
-            h, w = img1_img.shape[:2]
-            nuevo = (int(w*escala1), int(h*escala1))
-            img1_img = cv2.resize(img1_img, nuevo)
-        if escala2 != 1.0:
-            h, w = img2_img.shape[:2]
-            nuevo = (int(w*escala2), int(h*escala2))
-            img2_img = cv2.resize(img2_img, nuevo)
-        
-        # Copiar fondo para no modificarlo directamente
-        res = fondo_img.copy()
-        h_fondo, w_fondo = res.shape[:2]
-        
-        # Superponer img1 en (x1, y1)
-        h1, w1 = img1_img.shape[:2]
-        if x1 + w1 <= w_fondo and y1 + h1 <= h_fondo:
-            roi = res[y1:y1+h1, x1:x1+w1]
-            if opacidad1 < 1.0:
-                cv2.addWeighted(img1_img, opacidad1, roi, 1-opacidad1, 0, roi)
-            else:
-                res[y1:y1+h1, x1:x1+w1] = img1_img
-        
-        # Superponer img2 en (x2, y2)
-        h2, w2 = img2_img.shape[:2]
-        if x2 + w2 <= w_fondo and y2 + h2 <= h_fondo:
-            roi = res[y2:y2+h2, x2:x2+w2]
-            if opacidad2 < 1.0:
-                cv2.addWeighted(img2_img, opacidad2, roi, 1-opacidad2, 0, roi)
-            else:
-                res[y2:y2+h2, x2:x2+w2] = img2_img
-    
-    return Response(content=imagen_a_bytes(res), media_type="image/png")
+    # Procesar
+    resultado_bytes = procesar_composicion_bytes(
+        img_sup_bytes, img_inf_bytes, img_incrustar_bytes,
+        porcentaje_fusion, curva_fusion,
+        factor_ampliacion, region_tipo,
+        x_region, y_region, ancho_region, alto_region,
+        tamaño_ancho_incrustacion, tamaño_alto_incrustacion,
+        posicion_incrustacion,
+        fusion_superior, fusion_inferior,
+        fusion_izquierda, fusion_derecha,
+        margen, radio_difuminado,
+        hacer_cuadrada
+    )
+    return Response(content=resultado_bytes, media_type="image/png")
