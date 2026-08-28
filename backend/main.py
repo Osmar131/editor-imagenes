@@ -8,6 +8,10 @@ import math
 
 app = FastAPI(title="Editor de Imágenes API", version="2.0")
 
+@app.get("/healthz")
+async def health_check():
+    return {"status": "ok", "message": "Backend funcionando"}
+
 # ========== FUNCIÓN AUXILIAR CORREGIDA ==========
 async def leer_imagen(file):
     """Lee una imagen subida y la convierte a BGR (OpenCV)"""
