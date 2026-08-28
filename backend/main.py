@@ -1,13 +1,23 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import Response
+from fastapi.middleware.cors import CORSMiddleware
 import cv2
 import numpy as np
 from PIL import Image
 import io
-import math
 
 app = FastAPI(title="Editor de Imágenes API", version="2.0")
 
+# ========== CORS (opcional pero recomendado) ==========
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ========== ENDPOINT DE SALUD ==========
 @app.get("/healthz")
 async def health_check():
     return {"status": "ok", "message": "Backend funcionando"}
