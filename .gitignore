@@ -1,24 +1,32 @@
-# Entornos virtuales
+# Python
+__pycache__/
+*.pyc
 venv/
 env/
-*.pyc
-__pycache__/
+.venv/
+*.py[cod]
+*.so
+.Python
 
-# Archivos de sistema
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Archivos temporales
-*.log
-*.tmp
+# Streamlit
+.streamlit/
 
-# Imágenes de prueba (opcional)
-*.jpg
-*.jpeg
-*.png
-*.bmp
-*.tiff
+# Modelos (si agregas después)
+*.pkl
+*.h5
+*.pt
+*.pth
+*.safetensors
 
-# Configuraciones locales
+# Variables de entorno
 .env
-*.local

@@ -196,3 +196,7 @@ async def componer_imagenes(
         hacer_cuadrada
     )
     return Response(content=resultado_bytes, media_type="image/png")
+
+@app.get("/healthz")
+async def health_check():
+    return {"status": "ok", "message": "Backend funcionando"}
