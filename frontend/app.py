@@ -10,7 +10,11 @@ st.set_page_config(page_title="Editor de Imágenes Pro", page_icon="🎨", layou
 st.title("🎨 Editor de Imágenes Pro")
 st.markdown("Procesa imágenes con filtros tradicionales y operaciones geométricas.")
 
+# Antes
 BACKEND_URL = "http://localhost:8000"
+
+# Después
+# BACKEND_URL = "https://tu-backend-en-render.onrender.com"
 
 # Diccionario con rutas de imágenes de ejemplo (ajusta los nombres según tus archivos)
 imagenes_ejemplo = {
