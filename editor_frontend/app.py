@@ -4,12 +4,23 @@ from PIL import Image
 import io
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import os
 
 st.set_page_config(page_title="Editor de Imágenes Pro", page_icon="🎨", layout="wide")
 st.title("🎨 Editor de Imágenes Pro")
 st.markdown("Procesa imágenes con filtros tradicionales y operaciones geométricas.")
 
 BACKEND_URL = "http://localhost:8000"
+
+# Diccionario con rutas de imágenes de ejemplo (ajusta los nombres según tus archivos)
+imagenes_ejemplo = {
+    "Ecualización": "sample_images/ecualizacion_ejemplo.png",
+    "Suavizado": "sample_images/suavizado_ejemplo.png",
+    "Convolución": "sample_images/convolucion_ejemplo.png",
+    "Binarizado": "sample_images/binarizacion_ejemplo.png",
+    "Geométrica": "sample_images/geometrica_ejemplo.png",
+    # Composición no tiene imagen de ejemplo por defecto (usa 3 imágenes)
+}
 
 # ====================================================
 # NUEVA FUNCIÓN PARA PREVISUALIZACIÓN CON RECTÁNGULOS
@@ -522,6 +533,7 @@ elif categoria == "Composición":
 # ====================================================
 # PROCESAMIENTO GLOBAL (SOLO PARA CATEGORÍAS ≠ COMPOSICIÓN)
 # ====================================================
+
 if categoria != "Composición":
     # --- CAMBIO: El botón global ahora tiene key única y usa placeholder ---
     if st.button(boton, type="primary", key="procesar_global"):
@@ -551,3 +563,52 @@ if categoria != "Composición":
                 placeholder.error("❌ No se pudo conectar al backend. Asegúrate de que esté corriendo.")
             except Exception as e:
                 placeholder.error(f"Error inesperado: {str(e)}")
+
+# ====================================================
+# SECCIÓN EDUCATIVA: EXPLICACIÓN DE CADA FILTRO
+# ====================================================
+st.divider()
+st.subheader("📖 ¿Qué hace cada filtro?")
+
+# Diccionario con descripciones y rutas de imágenes de ejemplo
+descripciones = {
+    "Ecualización": {
+        "desc": "La **ecualización de histograma** mejora el contraste de una imagen al redistribuir los valores de intensidad de los píxeles. Es útil para imágenes con poca luz o bajo contraste.",
+        "ejemplo": "sample_images/ecualizacion_ejemplo.png"
+    },
+    "Suavizado": {
+        "desc": "El **suavizado** reduce el ruido y los detalles finos aplicando un filtro de paso bajo. Los tipos más comunes son el **Gaussiano** (difuminado suave), **Mediana** (elimina ruido sal-y-pimienta) y **Promedio** (difuminado uniforme).",
+        "ejemplo": "sample_images/suavizado_ejemplo.png"
+    },
+    "Convolución": {
+        "desc": "La **convolución** aplica una máscara (kernel) para realzar o modificar características de la imagen. Por ejemplo, **Sharpen** resalta bordes, **Edge Detection** detecta contornos, **Emboss** da efecto relieve, **Blur** difumina y **Identity** no hace cambios.",
+        "ejemplo": "sample_images/convolucion_ejemplo.png"
+    },
+    "Binarizado": {
+        "desc": "El **binarizado** convierte la imagen a blanco y negro (binario) usando un umbral. **Otsu** calcula el umbral automáticamente, **Adaptativo** ajusta el umbral por regiones, y **Manual** permite definir un valor fijo. Ideal para segmentación y análisis de formas.",
+        "ejemplo": "sample_images/binarizacion_ejemplo.png"
+    },
+    "Geométrica": {
+        "desc": "Las **operaciones geométricas** modifican la posición o tamaño de la imagen: **Rotar** la gira un ángulo, **Redimensionar** cambia sus dimensiones (escala o píxeles), y **Recortar** extrae una región rectangular.",
+        "ejemplo": "sample_images/geometrica_ejemplo.png"
+    },
+    "Composición": {
+        "desc": "La **composición** combina tres imágenes: concatena dos (superior e inferior) con fusión, extrae y amplía una región de la tercera, la incrusta sobre la concatenada con fusión ajustable, y opcionalmente la convierte a formato cuadrado con fondo difuminado.",
+        "ejemplo": "sample_images/composicion_ejemplo.png"  # No hay una imagen de ejemplo simple para composición
+    }
+}
+
+# Mostrar la descripción correspondiente a la categoría actual
+if categoria in descripciones:
+    info = descripciones[categoria]
+    st.markdown(f"**{categoria}**")
+    st.markdown(info["desc"])
+    
+    # Si existe imagen de ejemplo para esta categoría, mostrarla
+    if info["ejemplo"] and os.path.exists(info["ejemplo"]):
+        img_ejemplo = Image.open(info["ejemplo"])
+        st.image(img_ejemplo, caption=f"Ejemplo de {categoria}", width=300)
+    else:
+        st.caption("ℹ️ No hay imagen de ejemplo para esta categoría.")
+else:
+    st.caption("ℹ️ Selecciona una categoría para ver su descripción.")
