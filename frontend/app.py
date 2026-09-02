@@ -14,7 +14,7 @@ st.markdown("Procesa imágenes con filtros tradicionales y operaciones geométri
 # BACKEND_URL = "http://localhost:8000"
 
 # Después
-BACKEND_URL = "https://tu-backend-en-render.onrender.com"
+BACKEND_URL = "https://editor-backend-ezgn.onrender.com"
 
 # Diccionario con rutas de imágenes de ejemplo (ajusta los nombres según tus archivos)
 imagenes_ejemplo = {
