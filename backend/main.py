@@ -181,7 +181,7 @@ async def componer_imagenes(
     ancho_region: int = Form(100),
     alto_region: int = Form(100),
     tamaño_ancho_incrustacion: int = Form(25),
-    tamaño_alto_incrustacion: int = Form(None),
+    tamaño_alto_incrustacion: int = Form(0),
     posicion_incrustacion: str = Form("derecha_centro"),
     fusion_superior: int = Form(30),
     fusion_inferior: int = Form(30),
