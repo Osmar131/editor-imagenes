@@ -109,12 +109,23 @@ def incrustar_con_fusion(imagen_base_array, imagen_incrustar_array,
     alto_base, ancho_base = imagen_base_array.shape[:2]
     alto_inc, ancho_inc = imagen_incrustar_array.shape[:2]
     
-    # Calcular nuevo tamaño
+    # ✅ Si el alto es 0 o None, mantener proporción
+    if tamaño_alto_porcentaje is None or tamaño_alto_porcentaje <= 0:
+        tamaño_alto_porcentaje = None  # Forzar None para mantener proporción
+    
+    # Calcular nuevo tamaño (con validaciones)
     nuevo_ancho = int(ancho_base * (tamaño_ancho_porcentaje / 100))
+    nuevo_ancho = max(1, nuevo_ancho)  # Mínimo 1 píxel
+    
     if tamaño_alto_porcentaje is None:
-        nuevo_alto = int(alto_inc * (nuevo_ancho / ancho_inc))
+        # Mantener relación de aspecto
+        nuevo_alto = int(alto_inc * (nuevo_ancho / ancho_inc)) if ancho_inc > 0 else 1
     else:
         nuevo_alto = int(alto_base * (tamaño_alto_porcentaje / 100))
+    
+    nuevo_alto = max(1, nuevo_alto)  # Mínimo 1 píxel
+    
+    print(f"📐 Redimensionando a: {nuevo_ancho}x{nuevo_alto}")  # Depuración
     
     img_incrustar_pil = Image.fromarray(imagen_incrustar_array)
     img_incrustar_redim = img_incrustar_pil.resize((nuevo_ancho, nuevo_alto), Image.LANCZOS)
