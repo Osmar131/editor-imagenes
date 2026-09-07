@@ -16,14 +16,17 @@ st.markdown("Procesa imágenes con filtros tradicionales y operaciones geométri
 # Después
 BACKEND_URL = "https://editor-backend-ezgn.onrender.com"
 
-# Diccionario con rutas de imágenes de ejemplo (ajusta los nombres según tus archivos)
+# Obtener la ruta absoluta de la carpeta frontend
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Diccionario con rutas de imágenes de ejemplo
 imagenes_ejemplo = {
-    "Ecualización": "sample_images/ecualizacion_ejemplo.png",
-    "Suavizado": "sample_images/suavizado_ejemplo.png",
-    "Convolución": "sample_images/convolucion_ejemplo.png",
-    "Binarizado": "sample_images/binarizacion_ejemplo.png",
-    "Geométrica": "sample_images/geometrica_ejemplo.png",
-    # Composición no tiene imagen de ejemplo por defecto (usa 3 imágenes)
+    "Ecualización": os.path.join(BASE_DIR, "sample_images", "ecualizacion_ejemplo.png"),
+    "Suavizado": os.path.join(BASE_DIR, "sample_images", "suavizado_ejemplo.png"),
+    "Convolución": os.path.join(BASE_DIR, "sample_images", "convolucion_ejemplo.png"),
+    "Binarizado": os.path.join(BASE_DIR, "sample_images", "binarizacion_ejemplo.png"),
+    "Geométrica": os.path.join(BASE_DIR, "sample_images", "geometrica_ejemplo.png"),
+    "Composición": os.path.join(BASE_DIR, "sample_images", "composicion_ejemplo.png"),  # ✅ Renombrado
 }
 
 # ====================================================
@@ -574,31 +577,34 @@ if categoria != "Composición":
 st.divider()
 st.subheader("📖 ¿Qué hace cada filtro?")
 
+# Obtener la ruta absoluta de la carpeta frontend
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Diccionario con descripciones y rutas de imágenes de ejemplo
 descripciones = {
     "Ecualización": {
         "desc": "La **ecualización de histograma** mejora el contraste de una imagen al redistribuir los valores de intensidad de los píxeles. Es útil para imágenes con poca luz o bajo contraste.",
-        "ejemplo": "sample_images/ecualizacion_ejemplo.png"
+        "ejemplo": os.path.join(BASE_DIR, "sample_images", "ecualizacion_ejemplo.png")  # ✅ .png
     },
     "Suavizado": {
         "desc": "El **suavizado** reduce el ruido y los detalles finos aplicando un filtro de paso bajo. Los tipos más comunes son el **Gaussiano** (difuminado suave), **Mediana** (elimina ruido sal-y-pimienta) y **Promedio** (difuminado uniforme).",
-        "ejemplo": "sample_images/suavizado_ejemplo.png"
+        "ejemplo": os.path.join(BASE_DIR, "sample_images", "suavizado_ejemplo.png")  # ✅ .png
     },
     "Convolución": {
         "desc": "La **convolución** aplica una máscara (kernel) para realzar o modificar características de la imagen. Por ejemplo, **Sharpen** resalta bordes, **Edge Detection** detecta contornos, **Emboss** da efecto relieve, **Blur** difumina y **Identity** no hace cambios.",
-        "ejemplo": "sample_images/convolucion_ejemplo.png"
+        "ejemplo": os.path.join(BASE_DIR, "sample_images", "convolucion_ejemplo.png")  # ✅ .png
     },
     "Binarizado": {
         "desc": "El **binarizado** convierte la imagen a blanco y negro (binario) usando un umbral. **Otsu** calcula el umbral automáticamente, **Adaptativo** ajusta el umbral por regiones, y **Manual** permite definir un valor fijo. Ideal para segmentación y análisis de formas.",
-        "ejemplo": "sample_images/binarizacion_ejemplo.png"
+        "ejemplo": os.path.join(BASE_DIR, "sample_images", "binarizacion_ejemplo.png")  # ✅ .png
     },
     "Geométrica": {
         "desc": "Las **operaciones geométricas** modifican la posición o tamaño de la imagen: **Rotar** la gira un ángulo, **Redimensionar** cambia sus dimensiones (escala o píxeles), y **Recortar** extrae una región rectangular.",
-        "ejemplo": "sample_images/geometrica_ejemplo.png"
+        "ejemplo": os.path.join(BASE_DIR, "sample_images", "geometrica_ejemplo.png")  # ✅ .png
     },
     "Composición": {
         "desc": "La **composición** combina tres imágenes: concatena dos (superior e inferior) con fusión, extrae y amplía una región de la tercera, la incrusta sobre la concatenada con fusión ajustable, y opcionalmente la convierte a formato cuadrado con fondo difuminado.",
-        "ejemplo": "sample_images/composicion_ejemplo.png"  # No hay una imagen de ejemplo simple para composición
+        "ejemplo": os.path.join(BASE_DIR, "sample_images", "composicion_ejemplo.png")
     }
 }
 
@@ -616,3 +622,4 @@ if categoria in descripciones:
         st.caption("ℹ️ No hay imagen de ejemplo para esta categoría.")
 else:
     st.caption("ℹ️ Selecciona una categoría para ver su descripción.")
+
