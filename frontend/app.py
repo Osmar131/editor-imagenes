@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import os
 
-st.set_page_config(page_title="Editor de Imágenes Pro", page_icon="🎨", layout="wide")
-st.title("🎨 Editor de Imágenes Pro")
+st.set_page_config(page_title="Editor de imágenes con filtros avanzados y preparado para IA", page_icon="🎨", layout="wide")
+st.title("🎨 Editor de imágenes con filtros avanzados y preparado para IA")
 st.markdown("Procesa imágenes con filtros tradicionales y operaciones geométricas.")
 
 # Antes

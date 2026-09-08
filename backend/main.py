@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 import io
 
-app = FastAPI(title="Editor de Imágenes API", version="2.0")
+app = FastAPI(title="AI Image Studio – Procesamiento y Edición", version="2.0")
 
 # ========== CORS (opcional pero recomendado) ==========
 app.add_middleware(
