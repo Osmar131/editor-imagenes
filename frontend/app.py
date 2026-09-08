@@ -118,10 +118,45 @@ categoria = st.sidebar.selectbox(
 )
 
 # ====================================================
+# ESTILO CSS PARA OCULTAR EL ÍCONO "+" DEL FILE_UPLOADER
+# ====================================================
+st.markdown("""
+<style>
+    /* Ocultar el ícono "+" del file_uploader */
+    .stFileUploader > div > button > svg {
+        display: none !important;
+    }
+    /* Mejorar la apariencia del botón */
+    .stFileUploader > div > button {
+        background-color: #f0f2f6 !important;
+        border: 2px dashed #ccc !important;
+        border-radius: 10px !important;
+        padding: 20px !important;
+        font-size: 16px !important;
+        color: #333 !important;
+        width: 100% !important;
+        transition: all 0.3s ease !important;
+    }
+    .stFileUploader > div > button:hover {
+        background-color: #e0e2e6 !important;
+        border-color: #999 !important;
+    }
+    /* Ocultar la etiqueta "Drag and drop" si aparece */
+    .stFileUploader > div > small {
+        display: none !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# ====================================================
 # SUBIR IMAGEN (si no es Composición, solo una imagen)
 # ====================================================
 if categoria != "Composición":
-    archivo = st.file_uploader("Elige una imagen...", type=["jpg", "jpeg", "png"])
+    archivo = st.file_uploader(
+        "📁 Haz clic aquí o arrastra una imagen",
+        type=["jpg", "jpeg", "png"],
+        key="upload_propia"
+    )
 else:
     # Para Composición, la subida de imágenes se maneja dentro de su bloque
     archivo = None
