@@ -129,7 +129,6 @@ st.markdown("""
     .stFileUploader button svg {
         display: none !important;
     }
-
     /* Mejorar la apariencia del botón */
     .stFileUploader button {
         background-color: #f0f2f6 !important;
@@ -140,29 +139,10 @@ st.markdown("""
         color: #333 !important;
         width: 100% !important;
         transition: all 0.3s ease !important;
-        min-height: 80px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
     }
     .stFileUploader button:hover {
         background-color: #e0e2e6 !important;
         border-color: #999 !important;
-    }
-
-    /* Mostrar texto "Cambiar imagen" cuando no hay archivo seleccionado */
-    .stFileUploader button span:last-child:empty::before {
-        content: "📁 Cambiar imagen";
-        color: #333;
-        font-size: 16px;
-        font-weight: 500;
-    }
-
-    /* Si hay archivo, mostrar su nombre con estilo */
-    .stFileUploader button span:last-child:not(:empty) {
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        color: #1e88e5 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -172,7 +152,7 @@ st.markdown("""
 # ====================================================
 if categoria != "Composición":
     archivo = st.file_uploader(
-        "📁 Seleccionar o cambiar imagen",
+        "📁 Haz clic aquí o arrastra una imagen",
         type=["jpg", "jpeg", "png"],
         key="upload_propia"
     )
